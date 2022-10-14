@@ -1,0 +1,72 @@
+.MainNavWrap {
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 90;
+    background-color: #fff;
+}
+
+.topNavWrap {
+    height: 75px;
+}
+
+.brandLogo {
+    max-width: 140px /*161px*/;
+}
+
+.searchBarTrigger :global(button span){
+    vertical-align: middle;
+}
+
+.searchBarWrap {
+    max-width: 550px;
+}
+
+.searchBarWrap :global(form input), .searchBarWrap :global(form .search-btn), .searchBarTrigger :global(button) {
+    height: 40px;
+}
+
+.searchBarWrap :global(.search-btn), .searchBarTrigger :global(button) {
+    width: 45px;
+}
+
+.searchBarWrap :global(.search-btn span), .searchBarWrap :global(.hide-search-input span) {
+    vertical-align: middle;
+}
+
+.searchBarWrap :global(.hide-search-input) {
+    width: 45px;    
+}
+
+
+
+@media screen and (max-width: 768px) {
+
+.topNavWrap {
+    max-height: 4rem !important;
+}
+
+.searchBarWrap {
+    position: absolute;
+    background-color: #fff /*rgba(255, 0, 0, 0.2)*/;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+}
+}
+
+.mobileUserNav {
+    padding: 3px 5px 4px 0px;
+}
+
+.mobileUserNav :global(.dropdown-toggle) {
+    width: 33px;
+    height: 33px;
+    background-color: #eef1f5 !important;
+}
+
+.mobileUserNav :global(.dropdown-toggle::after) {
+    display: none;
+}

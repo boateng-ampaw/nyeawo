@@ -1,0 +1,9 @@
+.mainWrap {
+    margin-top: 60px;
+}
+
+@media screen and (min-width: 992px) {
+.mainWrap {
+    margin-top: 126px;
+}
+}

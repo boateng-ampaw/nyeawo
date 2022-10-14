@@ -1,0 +1,13 @@
+.productWrap {
+    overflow: hidden;
+}
+
+.productImgWrap {
+    height: 169px /*223px*/;
+}
+
+.productImgWrap img {
+    height: 100%;
+    object-fit: cover contain;
+    object-fit: contain;
+}
