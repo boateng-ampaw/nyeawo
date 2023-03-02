@@ -5,13 +5,17 @@ import useAuthUser from "../../../../hooks/auth";
 import 'material-icons/iconfont/outlined.css';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import { Modal, Button, ButtonToolbar, Placeholder, Loader, Notification, useToaster, Message } from 'rsuite';
+import { Modal, Loader, useToaster } from 'rsuite';
 import { useForm } from "react-hook-form";
+import { FiUser } from 'react-icons/fi'
+import { MdOutlineArrowDropDown } from 'react-icons/md'
+import { RiAccountPinCircleFill } from 'react-icons/ri'
+import { FcAdvertising, FcPackage, FcShop, FcSettings, FcDownRight } from 'react-icons/fc'
 
 
 const loginURL = 'https://nyeawo.com/apis/login-api.php?next_login=1'
 
-export default function LoginSignup(){
+export default function LoginSignup({styles}){
     const {data,loading,loginError,mutate, isLoggedIn, user} = useAuthUser()
     const router = useRouter()
     const [showLoginForm, setShowLoginForm] = useState(false)
@@ -19,6 +23,8 @@ export default function LoginSignup(){
     const [signInIsLoading, setSignInIsLoading] = useState(false)
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const toaster = useToaster();
+
+    const {TopNavStyles} = styles
 
     
     const handleOpen = () => setShowLoginForm(true);
@@ -30,10 +36,10 @@ export default function LoginSignup(){
 
         let fd = new FormData(); //Create a new form data instance
 
-        console.log(formData);
+        // console.log(formData);
 
         for(const name in formData) {
-            fd.append(name, formData[name]); //Append all form data from teh react hook form to the form data instance
+            fd.append(name, formData[name]); //Append all form data from the react hook form to the form data instance
         }
 
         let hiddenInputsResp = await fetch(`${loginURL}`,{
@@ -47,7 +53,7 @@ export default function LoginSignup(){
 
     const  hiddenElems = doc.querySelectorAll('input[type="hidden"]') // Use a GET request to get all hidden form input from the login API
 
-    console.log('Hidden elems',hiddenElems);
+    // console.log('Hidden elems',hiddenElems);
 
     for(const hiddenInput of hiddenElems) {
         fd.append(hiddenInput['name'], hiddenInput['value']); // Append the hidden input values returned from the GET request to the form data instance
@@ -61,7 +67,7 @@ export default function LoginSignup(){
         })
         let loginData = await loginResp.json()
 
-        console.log(loginData)
+        // console.log(loginData)
 
         setSignInIsLoading(false)
 
@@ -75,6 +81,27 @@ export default function LoginSignup(){
 
     }
 
+
+    const logout = async (e,logoutLink,redirectPg)=>{
+        e.preventDefault()
+        // console.log('Logout link',logoutLink,redirectPg);
+
+        let resp = await fetch(`${logoutLink}`,{
+        'credentials': 'include',
+        'redirect': 'follow'
+        })
+        let logoutData = await resp.json()
+
+    // console.log(logoutData.isLoggedIn);
+
+    if(!logoutData.isLoggedIn){
+        // router.push(redirectPg)
+        mutate(null)
+    }
+
+
+    }
+
     if(loading){
          return <>
          <div>
@@ -85,7 +112,138 @@ export default function LoginSignup(){
 
     return (
     <div>
-        <div className='row gx-2 align-items-center'>
+
+        {/* Test */}
+        <div className={`d-flex align-items-center ${TopNavStyles.mobileUserNav} border rounded-pill ms-2 ps-1`}>
+
+                <div className={`${TopNavStyles.mobileUserIcon} bg-light rounded-pill px-2 ps-2 py-1 me-1`}><FiUser className='fs-6 me-1 text-secondary' />
+                
+                    {
+                        isLoggedIn ? (
+                            <span className='d-lg-inline-block'>{data.user.user_type === 'merchant' ? 'Dashboard' : 'Account'}</span>
+                            ) : (
+                            <span className='d-lg-inline-block'>Login</span>
+                            )
+                    }
+                    
+                </div>
+
+
+                <div className={`dropdown`}>
+                    <a className="btn rounded-circle dropdown-toggle p-1 position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <MdOutlineArrowDropDown className='text-dark position-absolute top-50 start-50 translate-middle' size='1.8em' title='Dashboard' />
+                    </a>
+
+                    <ul className="dropdown-menu pt-4 shadow pb-3" style={{minWidth: '350px', maxHeight: '480px',overflowY: 'auto'}}>
+
+                        {
+                            isLoggedIn ? <>
+                                
+                                    <li className='pb-3 border-bottom px-4'>
+                            <h5 className='text-dark mb-1 fw-semibold'>{data.user.fullname}</h5>
+                            <p className='mb-1 small fw-light'>{data.user.email}</p>
+                            <p className='mb-0 small fw-light mt-0'>Customer #: {data.user.user_id}</p>
+                        </li>
+                        {
+                            data.user.user_type === 'merchant' ? (
+                                <li className='py-3 border-bottom'>
+                                    <h6 className='px-4 fw-semibold mb-2'>Create</h6>
+                                    <div className='px-3'>
+                                        {
+                                            !data.hasStore ? <Link href={data.createStoreLink}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><FcShop className='me-2' size='1.3em' /> Store</a></Link> : <Link href={data.createProductLink}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><FcPackage className='me-2' size='1.3em' /> <span>Product</span></a></Link>
+                                        }
+
+                                        {
+                                            data.hasProducts ? <Link href={data.advertiseLink}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><FcAdvertising className='me-2' size='1.3em' /> Advert</a></Link> : ''
+                                        }
+                                        
+                                        
+                                    </div>
+                                </li>
+                            ) : ''
+                        }
+                        
+                        <li className='py-3 border-bottom'>
+                            <h6 className='px-4 fw-semibold mb-2'>Account</h6>
+                            <div className='px-3'>
+
+                                {/* {
+                                    (data.user.user_type === 'merchant' && data.hasStore ) ? <>
+                                        <Link href={`/`}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><FcShop className='me-2' size='1.3em' /> My Store</a></Link>
+                                        <Link href={`/`}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><FcPackage className='me-2' size='1.3em' /> My Products</a></Link>
+                                    </> : ''
+                                } */}
+                                
+                                {
+                                    data.user.user_type === 'merchant' ? (
+                                        <Link href={data.merchantDashboardLink}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><RiAccountPinCircleFill className='me-2' size='1.3em' style={{fill: 'rgb(63, 81, 181)'}} /> My Dashboard</a></Link>
+                                    ) : (
+                                        <Link href={data.userAccountLink}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><RiAccountPinCircleFill className='me-2' size='1.3em' style={{fill: 'rgb(63, 81, 181)'}} /> My Account</a></Link>
+                                    )
+                                }      
+                                <Link href={data.accountSettings}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><FcSettings className='me-2' size='1.3em' /> Account Settings</a></Link>
+                            </div>
+                        </li>
+                        <li className='px-3 pt-3'>
+                            <p className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal pointer' onClick={(e)=>logout(e,data.logoutLink,router.asPath)}><FcDownRight className='me-2' size='1.3em' /> Logout</p>
+                        </li>
+                                
+                            </> : (
+                                <div className='px-3'>
+                                    <li><a role='button' className="dropdown-item fs-5 text-decoration-none nyeawo-btn-secondary mb-2" href="#" onClick={handleOpen}>Login</a>
+                                    </li>
+                                    <li><a className="dropdown-item fs-5 text-decoration-none nyeawo-btn-secondary " href={data.signUpLink}>Create Account</a></li>
+                                </div>
+                            )
+                        }
+
+                        
+
+                        
+
+
+                        {/* <li className='pb-3 border-bottom px-4'>
+                            <h5 className='text-dark mb-1 fw-semibold'>Nana Ampaw</h5>
+                            <p className='mb-1 small fw-light'>{`data.user.email`}</p>
+                            <p className='mb-0 small fw-light mt-0'>Customer #: 56456464645</p>
+                        </li>
+                                <li className='py-3 border-bottom'>
+                                    <h6 className='px-4 fw-semibold mb-2'>Create</h6>
+                                    <div className='px-3'>
+                                         <Link href={`data.createStoreLink`}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><FcShop className='me-2' size='1.3em' /> Store</a></Link>
+                                             <Link href={`data.createProductLink`}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><FcPackage className='me-2' size='1.3em' /> <span>Product</span></a></Link>
+                                        
+                                            <Link href={`data.advertiseLink`}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><FcAdvertising className='me-2' size='1.3em' /> Advert</a></Link>
+                                        
+                                        
+                                        
+                                    </div>
+                                </li>
+                        
+                        <li className='py-3 border-bottom'>
+                            <h6 className='px-4 fw-semibold mb-2'>Account</h6>
+                            <div className='px-3'>
+                                
+                                        <Link href={`data.merchantDashboardLink`}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><RiAccountPinCircleFill className='me-2' size='1.3em' style={{fill: 'rgb(63, 81, 181)'}} /> My Dashboard</a></Link>
+                                    
+                                        <Link href={`data.userAccountLink`}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><RiAccountPinCircleFill className='me-2' size='1.3em' style={{fill: 'rgb(63, 81, 181)'}} /> My Account</a></Link>
+                                       
+                                <Link href={`data.accountSettings`}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><FcSettings className='me-2' size='1.3em' /> Account Settings</a></Link>
+                            </div>
+                        </li> 
+
+                        <li className='px-3 pt-3'>
+                            <p className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal pointer' onClick={(e)=>logout(e,data.logoutLink,router.asPath)}><FcDownRight className='me-2' size='1.3em' /> Logout</p>
+                        </li>
+                        */}
+                        
+                    </ul>
+                </div>
+            </div>
+
+        {/* Test End */}
+
+        {/* <div className='row gx-2 align-items-center'>
             {
                 isLoggedIn ? "" : <>
                 <div className='col-lg mb-3 mb-lg-0 h-100'>
@@ -97,7 +255,7 @@ export default function LoginSignup(){
                 </>
             }
             
-        </div>
+        </div> */}
 
         <Modal open={showLoginForm} onClose={handleClose} size="xs">
         <Modal.Header>

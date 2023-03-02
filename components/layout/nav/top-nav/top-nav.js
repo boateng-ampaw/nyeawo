@@ -22,7 +22,7 @@ export default function TopNav(){
                     <div className="ms-auto flex-grow-1 ps-lg-5">
                         <SearchBar styles={{TopNavStyles}} />
                     </div>
-                    <div className="d-none d-lg-block">
+                    <div className="d-lg-block">
                         <LoginSignup styles={{TopNavStyles}} />
                     </div>
 
@@ -40,7 +40,7 @@ export default function TopNav(){
                 <div className='mb-5'>
                     <BottomNav />
                 </div>
-                <LoginSignup styles={{TopNavStyles}} />
+                {/* <LoginSignup styles={{TopNavStyles}} /> */}
                 
             </div>
         </div>

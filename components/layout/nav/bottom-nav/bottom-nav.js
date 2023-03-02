@@ -18,7 +18,7 @@ export default function BottomNav({visibility}){
             <ul className={`${BottomNavStyles.bottomNavWrap} d-lg-flex align-items-lg-center justify-content-center list-unstyled mb-0`}>
                 {
                 isLoading ? <div className="flex-fill px-lg-5"><Skeleton height={10} width={`100%`} /></div> : categories.map(category=>{
-                        return <li key={category.id} className="mb-3 mb-lg-0"><Link href={`/${category.slug}`}><a className="text-dark text-decoration-none fs-6" dangerouslySetInnerHTML={{__html: category.title }}></a></Link></li>
+                        return <li key={category.id} className="mb-3 mb-lg-0"><Link href={`/c/${category.slug}`}><a className="text-dark text-decoration-none fs-6" dangerouslySetInnerHTML={{__html: category.title }}></a></Link></li>
                     }) 
                 }
                 

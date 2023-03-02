@@ -25,7 +25,7 @@ const userFetcher = async (url) => {
 
     useEffect(()=>{
         if(data){
-        if(data.isLoggedIn === false) router.push('/account/login')
+        // if(data.isLoggedIn === false) router.push('/account/login')
       }
       },[data])
 

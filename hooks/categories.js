@@ -13,7 +13,7 @@ const fetcher = async (url) => {
 
     
     export const useGetCategories = ()=> {
-      const { data, error } = useSWR(`https://nyeawo.com/apis/products.php`, fetcher)
+      const { data, error } = useSWR(`https://nyeawo.com/apis/categories.php`, fetcher)
     
       return {
         categories: data,

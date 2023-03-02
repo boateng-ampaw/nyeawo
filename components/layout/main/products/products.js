@@ -32,7 +32,7 @@ export default function Products(props){
   },[data])
 
   // if(isLoading) return 'Loading...'
-  if(isError) return 'Error...'
+  // if(isError) return 'Error...'
 
     return (
 

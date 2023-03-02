@@ -7,7 +7,7 @@ export default function Footer(){
     return <>   
 
         <footer>
-            <div className='container pb-5'>
+            <div className='container pb-5 mt-5'>
                 <div className="row justify-content-center">
                     <div className='col-lg-auto mb-2 mb-lg-0'>
                         <div>

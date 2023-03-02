@@ -103,27 +103,14 @@ export default function Home({products=[],total_pages, current_page,product_cate
 }
 
 export async function getStaticProps(ctx){
-  // const {pg} = ctx.query
-  // const getPdtonPageNum = pg ? `pg=${pg}` : ''
-
-  // const resp = await fetch(`https://nyeawo.com/apis/products.php?${getPdtonPageNum}`)
-  const resp = await fetch(`https://nyeawo.com/apis/products.php?`)
+  const resp = await fetch(`https://nyeawo.com/apis/categories.php`)
   const data = await resp.json()
 
-  // const products = data.all_products.length ? data.all_products : []
-  // const total_pages = data.total_pages !== undefined ? data.total_pages : ''
-  // const current_page = data.current_page !== undefined ? data.current_page : ''
-  // const prev_page = data.prev_page !== undefined ? data.prev_page : 'No prev page link'
-  // const next_page = data.next_page !== undefined ? data.next_page : 'No next page link'
-  // const product_categories = data.product_categories.length ? data.product_categories : []
   const only_first_level_categories = data.product_categories.length ? filter(data.product_categories,function(o){return o.folder_level === 0 }) : []
   
 
   return {
     props: {
-      // products,
-      // total_pages,
-      // current_page,
       product_categories: only_first_level_categories
     }
   }

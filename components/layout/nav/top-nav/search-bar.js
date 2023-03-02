@@ -19,25 +19,7 @@ export default function SearchBar({styles}){
     const {loading,loginError, isLoggedIn, data, mutate} = useAuthUser()
     const router = useRouter()
 
-    const logout = async (e,logoutLink,redirectPg)=>{
-        e.preventDefault()
-        console.log('Logout link',logoutLink,redirectPg);
-
-        let resp = await fetch(`${logoutLink}`,{
-        'credentials': 'include',
-        'redirect': 'follow'
-        })
-        let logoutData = await resp.json()
-
-    console.log(logoutData.isLoggedIn);
-
-    if(!logoutData.isLoggedIn){
-        // router.push(redirectPg)
-        mutate(null)
-    }
-
-
-    }
+    
 
 
     // useEffect(()=>{
@@ -56,8 +38,11 @@ const {TopNavStyles} = styles
                 <div className='flex-grow-1 me-2 me-lg-1'><input className={`w-100 form-control`} type='text' name='s' placeholder='Search for products' /></div>
                 <button className='bg-white border-0 search-btn ms-auto'><span className="nyeawo-icon-bnt pointer fs-3 h-100 bg-white"><FiSearch className={`text-dark fs-5`} /></span></button>
             </form>
-        </div>
-        {
+        </div> 
+
+
+
+        {/* {
             isLoggedIn ? <>
             <div className={`d-flex align-items-center ${TopNavStyles.mobileUserNav} border rounded-pill ms-2 ps-1`}>
                 <div className={`${TopNavStyles.mobileUserIcon} bg-light rounded-pill px-2 ps-2 py-1 me-1`}><FiUser className='fs-6 me-1 text-secondary' /><span>{data.user.user_type === 'merchant' ? 'Dashboard' : 'Account'}</span></div>
@@ -94,13 +79,6 @@ const {TopNavStyles} = styles
                         <li className='py-3 border-bottom'>
                             <h6 className='px-4 fw-semibold mb-2'>Account</h6>
                             <div className='px-3'>
-
-                                {/* {
-                                    (data.user.user_type === 'merchant' && data.hasStore ) ? <>
-                                        <Link href={`/`}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><FcShop className='me-2' size='1.3em' /> My Store</a></Link>
-                                        <Link href={`/`}><a className='nyeawo-btn-secondary d-block d-flex align-items-center fs-6 fw-normal'><FcPackage className='me-2' size='1.3em' /> My Products</a></Link>
-                                    </> : ''
-                                } */}
                                 
                                 {
                                     data.user.user_type === 'merchant' ? (
@@ -120,7 +98,7 @@ const {TopNavStyles} = styles
                 </div>
             </div>
             </> : ''
-        }
+        } */}
         
         
     </div>

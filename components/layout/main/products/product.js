@@ -4,19 +4,17 @@ import ProductStyles from '../../../styles/product.module.css'
 
 export default function Product(props){
 
-    // console.log(props);
-
     return (
             <div className={`${ProductStyles.productWrap} h-100 border d-flex flex-column rounded`}>
                     <div className={`${ProductStyles.productImgWrap}`}>
-                        <Link href={`/${props.folder_slug}/${props.slug}`}>
+                        <Link href={`/p/${props.slug}`}>
                             <a  className={`d-block text-decoration-none ${ProductStyles.productImgWrap}`}>
                                 <Image className='img-fluid w-100' src={props.images.square ? props.images.square : `/images/img-placeholder.png`} width={730} height={730} alt={props.title} placeholder="blur" blurDataURL="/images/img-placeholder.png" />
                             </a>
                         </Link>
                     </div>
                     <div className={`${ProductStyles.productDetail} p-3`}>
-                        <Link href={`/${props.folder_slug}/${props.slug}`}>
+                        <Link href={`/p/${props.slug}`}>
                             <a className='d-block text-decoration-none text-dark mb-2'>
                                 <h6 className='lh-base mb-0 fw-semibold' dangerouslySetInnerHTML={{__html: props.title}}></h6>
                             </a>
